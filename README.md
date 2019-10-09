@@ -1,4 +1,4 @@
-# NearBee SDK for Android
+# LocUpd SDK for Android
 
 You will need an API key for the NearBee SDK service to work.
 
@@ -10,7 +10,7 @@ allprojects {
     repositories {
         …
         maven {
-            url  "https://dl.bintray.com/mobstac/maven"
+            url  "https://jitpack.io"
         }
         …
     }
@@ -22,7 +22,7 @@ allprojects {
 ```groovy
 dependencies {
     …
-    implementation 'co.nearbee:nearbeesdk:2.1.6'
+    implementation 'com.github.akhilniravath:LocApp:v1.0
 }
 ```
 
@@ -32,13 +32,9 @@ dependencies {
 
 
 ## Permissions
-#### NearBee requires the following permissions.
+#### LocUpd requires the following permissions.
 ```xml
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 ```
@@ -46,7 +42,7 @@ dependencies {
 ### Runtime permissions
 
 ##### Location
-NearBee requires the location permission to scan for Beacons.
+LocUpd requires the location permission to scan for WOT.
 
 
 ## Usage
