@@ -7,7 +7,7 @@ Merge: f1d5f19 eb23077
 Author: Prasanth Muralidharan 
 Date:   Sat Oct 5 13:14:44 2019 +0530
 
-    Merge branch 'master' of github.com:akhilniravath/LocApp
+    Merge branch 'master' of github.com:akhilniravath/LocUpd-Android-SDK
 
 Found Android manifest
 Android SDK version: 29. Build tools: 29.0.2
@@ -129,15 +129,15 @@ Found artifact: com.github.akhilniravath:wotcursdk:v1.0
 Exit code: 0
 
 Build artifacts:
-com.github.akhilniravath:LocApp:v1.0
+com.github.akhilniravath:LocUpd-Android-SDK:v1.0
 
 Files: 
-com/github/akhilniravath/LocApp/v1.0
-com/github/akhilniravath/LocApp/v1.0/LocApp-v1.0-sources.jar
-com/github/akhilniravath/LocApp/v1.0/LocApp-v1.0.aar
-com/github/akhilniravath/LocApp/v1.0/LocApp-v1.0.pom
-com/github/akhilniravath/LocApp/v1.0/LocApp-v1.0.pom.md5
-com/github/akhilniravath/LocApp/v1.0/LocApp-v1.0.pom.sha1
-com/github/akhilniravath/LocApp/v1.0/build.log
+com/github/akhilniravath/LocUpd-Android-SDK/v1.0
+com/github/akhilniravath/LocUpd-Android-SDK/v1.0/LocUpd-Android-SDK-v1.0-sources.jar
+com/github/akhilniravath/LocUpd-Android-SDK/v1.0/LocUpd-Android-SDK-v1.0.aar
+com/github/akhilniravath/LocUpd-Android-SDK/v1.0/LocUpd-Android-SDK-v1.0.pom
+com/github/akhilniravath/LocUpd-Android-SDK/v1.0/LocUpd-Android-SDK-v1.0.pom.md5
+com/github/akhilniravath/LocUpd-Android-SDK/v1.0/LocUpd-Android-SDK-v1.0.pom.sha1
+com/github/akhilniravath/LocUpd-Android-SDK/v1.0/build.log
 
 

@@ -22,13 +22,13 @@ allprojects {
 ```groovy
 dependencies {
     …
-    implementation 'com.github.akhilniravath:LocApp:v1.0
+    implementation 'com.github.akhilniravath:LocUpd-Android-SDK:v1.0
 }
 ```
 
 ##### Latest version
 
-[![](https://jitpack.io/v/akhilniravath/LocApp.svg)](https://jitpack.io/#akhilniravath/LocApp) 
+[![](https://jitpack.io/v/akhilniravath/LocUpd-Android-SDK.svg)](https://jitpack.io/#akhilniravath/LocUpd-Android-SDK)
 
 
 ## Permissions
