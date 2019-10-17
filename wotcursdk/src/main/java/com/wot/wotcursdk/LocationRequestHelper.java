@@ -31,7 +31,7 @@ public class LocationRequestHelper {
         try {
             String urlSend = "";
             for (Location location : mlocation) {
-                urlSend = "http://192.168.2.103/locapp/index.php?user_id="+userId+"&latlong="+location.getLatitude()+","+location.getLongitude()+"&fcm_token="+fcm_token;
+                urlSend = "http://192.168.2.104/locapp/index.php?user_id="+userId+"&latlong="+location.getLatitude()+","+location.getLongitude()+"&fcm_token="+fcm_token;
             }
             Log.e("check",urlSend);
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
