@@ -1,9 +1,15 @@
 package com.wot.wotcur;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -47,25 +53,21 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
      */
     // FIXME: 5/16/17
     private static final long UPDATE_INTERVAL = 10 * 1000;
-
     /**
      * The fastest rate for active location updates. Updates will never be more frequent
      * than this value, but they may be less frequent.
      */
     // FIXME: 5/14/17
     private static final long FASTEST_UPDATE_INTERVAL = UPDATE_INTERVAL / 2;
-
     /**
      * The max time before batched results are delivered by location services. Results may be
      * delivered sooner than this interval.
      */
     private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 3;
-
     /**
      * Stores parameters for requests to the FusedLocationProviderApi.
      */
     private LocationRequest mLocationRequest;
-
     /**
      * The entry point to Google Play Services.
      */
@@ -76,6 +78,8 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     private Button mRemoveUpdatesButton;
     private TextView mLocationUpdatesResultView;
     String token;
+    private int SETTINGS_REQ_CODE = 201;
+    private int PROFILE_REQ_CODE = 202;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +103,72 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         buildGoogleApiClient();
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean flag= activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        return flag;
+    }
+
+    private void showAlertForInternet(final int source, final int destination){
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage("Enable Internet service");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                Intent settings = new Intent(Settings.ACTION_SETTINGS);
+                settings.putExtra("DESTINATION",destination);
+                startActivityForResult(settings,source);
+                //get gps
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                paramDialogInterface.cancel();
+
+            }
+        });
+        dialog.show();
+    }
+
+    public void checkGPS(Context context){
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if(locationManager!=null) {
+            boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (!isGpsEnabled) {
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                dialog.setMessage("Enable location service");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                        // TODO Auto-generated method stub
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        try {
+                            startActivityForResult(myIntent, 102);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                        // TODO Auto-generated method stub
+                        paramDialogInterface.cancel();
+
+                    }
+                });
+                dialog.show();
+            }
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -110,9 +180,14 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     protected void onResume() {
         super.onResume();
-        updateButtonsState(LocationRequestHelper.getRequesting(this));
-        mLocationUpdatesResultView.setText(LocationResultHelper.getSavedLocationResult(this));
-        LocationRequestHelper.sendApi(MainActivity.this, "1",LocationResultHelper.mLocations,token);
+        if(!isNetworkAvailable()) {
+            showAlertForInternet(SETTINGS_REQ_CODE, PROFILE_REQ_CODE);
+        } else {
+            checkGPS(this);
+            updateButtonsState(LocationRequestHelper.getRequesting(this));
+            mLocationUpdatesResultView.setText(LocationResultHelper.getSavedLocationResult(this));
+            LocationRequestHelper.sendApi(MainActivity.this, "1", LocationResultHelper.mLocations, token);
+        }
     }
 
     @Override
@@ -295,11 +370,16 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if (s.equals(LocationResultHelper.KEY_LOCATION_UPDATES_RESULT)) {
-            mLocationUpdatesResultView.setText(LocationResultHelper.getSavedLocationResult(this));
-            LocationRequestHelper.sendApi(MainActivity.this, "1",LocationResultHelper.mLocations,token);
-        } else if (s.equals(LocationRequestHelper.KEY_LOCATION_UPDATES_REQUESTED)) {
-            updateButtonsState(LocationRequestHelper.getRequesting(this));
+        if(!isNetworkAvailable()) {
+            showAlertForInternet(SETTINGS_REQ_CODE, PROFILE_REQ_CODE);
+        } else {
+            checkGPS(this);
+            if (s.equals(LocationResultHelper.KEY_LOCATION_UPDATES_RESULT)) {
+                mLocationUpdatesResultView.setText(LocationResultHelper.getSavedLocationResult(this));
+                LocationRequestHelper.sendApi(MainActivity.this, "1", LocationResultHelper.mLocations, token);
+            } else if (s.equals(LocationRequestHelper.KEY_LOCATION_UPDATES_REQUESTED)) {
+                updateButtonsState(LocationRequestHelper.getRequesting(this));
+            }
         }
     }
 
